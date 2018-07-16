@@ -60,8 +60,9 @@ public class BoardManager {
 	 * @return move object which includes moved piece and move type
 	 * @throws InvalidMoveException
 	 *             in case move is not valid
+	 * @throws InvalidCoordinatesException 
 	 */
-	public Move performMove(Coordinate from, Coordinate to) throws InvalidMoveException {
+	public Move performMove(Coordinate from, Coordinate to) throws InvalidMoveException, InvalidCoordinatesException {
 
 		Move move = validateMove(from, to);
 
@@ -232,21 +233,19 @@ public class BoardManager {
 		this.board.setPieceAt(null, lastMove.getTo());
 	}
 
-	private Move validateMove(Coordinate from, Coordinate to) throws InvalidMoveException, KingInCheckException, InvalidCoordinatesException {
+	private Move validateMove(Coordinate from, Coordinate to)
+			throws InvalidMoveException, KingInCheckException, InvalidCoordinatesException {
 		// TODO please add implementation here
 		Move currentMove = null;
 		checkGivenCoordinates(from, to);
 		currentMove.setFrom(from);
 		currentMove.setTo(to);
 		checkMoveType(currentMove, to);
-		checkPossibleMove(from , to);
-		//DAC IFY???
-		
-		
-		
+		checkPossibleMove(from, to);
+		// DAC IFY???
+
 		return currentMove;
 	}
-
 
 	private boolean isKingInCheck(Color kingColor) {
 
@@ -254,59 +253,101 @@ public class BoardManager {
 		return false;
 	}
 
-	//ucieczka od szacha
+	// ucieczka od szacha
 	private boolean isAnyMoveValid(Color nextMoveColor) {
 
 		// TODO please add implementation here
 
 		return false;
 	}
-	
-	private boolean checkGivenCoordinates (Coordinate from, Coordinate to) throws InvalidCoordinatesException{
-		if (from.equals(to)){
+
+	private boolean checkGivenCoordinates(Coordinate from, Coordinate to) throws InvalidCoordinatesException {
+		if (from.equals(to)) {
 			throw new InvalidCoordinatesException("Start coordinates are equal to end coordinates!");
 		}
-		//out of board - start coordinate
-		if (from.getX()<0||from.getX()>7||from.getY()<0||from.getY()>7){
+		// out of board - start coordinate
+		if (from.getX() < 0 || from.getX() > 7 || from.getY() < 0 || from.getY() > 7) {
 			throw new InvalidCoordinatesException("Start coordinates out of the board");
 		}
-		//out of board - end coordinate
-		if (to.getX()<0||to.getX()>7||to.getY()<0||to.getY()>7){
+		// out of board - end coordinate
+		if (to.getX() < 0 || to.getX() > 7 || to.getY() < 0 || to.getY() > 7) {
 			throw new InvalidCoordinatesException("End coordinates out of the board");
 		}
-		//piece belongs to player at end coordinates
-		if (this.board.getPieceAt(to).getColor()==Color.BLACK && calculateNextMoveColor()==Color.WHITE){
+		// piece belongs to player at end coordinates
+		if (this.board.getPieceAt(to).getColor() == Color.BLACK && calculateNextMoveColor() == Color.WHITE) {
 			throw new InvalidCoordinatesException("There is your piece at given end coordinates");
 		}
-		//piece does not belongs to a player at start coordinates
-		if (this.board.getPieceAt(from).getColor()==Color.BLACK && calculateNextMoveColor()==Color.BLACK){
+		// piece does not belongs to a player at start coordinates
+		if (this.board.getPieceAt(from).getColor() == Color.BLACK && calculateNextMoveColor() == Color.BLACK) {
 			throw new InvalidCoordinatesException("At start coordinates the piece does not belong to you");
 		}
-		//possibility for given move depending on piece
-		//czy pole jest puste, czy bedzie zbicie
-		
+		// possibility for given move depending on piece
+		// czy pole jest puste, czy bedzie zbicie
+
 		return true;
 	}
-	
-	private MoveType checkMoveType (Move currentMove, Coordinate to){
-		if (this.board.getPieceAt(to)==null){
+
+	private MoveType checkMoveType(Move currentMove, Coordinate to) {
+		if (this.board.getPieceAt(to) == null) {
 			currentMove.setType(MoveType.ATTACK);
-			}
-		if (this.board.getPieceAt(to)!=null){
+		}
+		if (this.board.getPieceAt(to) != null) {
 			currentMove.setType(MoveType.CAPTURE);
-			}
+		}
 		return currentMove.getType();
-		
+
 	}
-	
-	private boolean checkPossibleMove (Coordinate from, Coordinate to){
+
+	// Jak zrobic z tego klase
+	private boolean checkPossibleMove(Coordinate from, Coordinate to) throws InvalidCoordinatesException {
 		Piece currentPiece = this.board.getPieceAt(from);
-		PieceType currentPieceType= currentPiece.getType();
-		switch (currentPieceType){
-		case PAWN: 
+		PieceType currentPieceType = currentPiece.getType();
+		
+		int currentx = from.getX();
+		int currenty = from.getY();
+		int newx = to.getX();
+		int newy = to.getY();
+
+		switch (currentPieceType) {
+		case PAWN:
 			break;
 		case ROOK:
-			break;
+			if (currentx == newx){
+				if (currenty< newy){
+					for (int i=currenty+1; i<newy; i++){
+						if (this.board.getPieceAt(new Coordinate(currentx, i))!=null){
+							throw new InvalidCoordinatesException ();
+						}
+					}					
+				}
+				else if (currenty>newy){
+					for (int i=newy+1; i<currenty; i++){
+						if (this.board.getPieceAt(new Coordinate(currentx, i))!=null){
+							throw new InvalidCoordinatesException ();
+						}
+					}
+				}
+			}
+			if (currenty == newy){
+				if (currentx< newx){
+					for (int i=currentx+1; i<newx; i++){
+						if (this.board.getPieceAt(new Coordinate(currenty, i))!=null){
+							throw new InvalidCoordinatesException ();
+						}
+					}					
+				}
+				else if (currenty>newx){
+					for (int i=newx+1; i<currenty; i++){
+						if (this.board.getPieceAt(new Coordinate(currenty, i))!=null){
+							throw new InvalidCoordinatesException ();
+						}
+					}
+				}
+			}
+			else {
+				throw new InvalidCoordinatesException ("Invalid move for ROOK!");
+			}
+				break;
 		case KNIGHT:
 			break;
 		case BISHOP:
