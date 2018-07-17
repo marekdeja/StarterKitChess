@@ -1,0 +1,22 @@
+INDEX VERSION 1.127+C:\projects\StarterKitChess\.metadata\.plugins\org.eclipse.jdt.core
+3202432666.index
+2412431667.index
+2045083068.index
+1628915939.index
+3321590800.index
+277331460.index
+730748115.index
+1720435348.index
+226478788.index
+926275683.index
+2070049777.index
+3566166503.index
+858228639.index
+3823032887.index
+1349495692.index
+2458543141.index
+3530244329.index
+2145227830.index
+2259922467.index
+3572654907.index
+3862977009.index

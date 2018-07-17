@@ -1,0 +1,20 @@
+package com.capgemini.chess.algorithms.implementation.exceptions;
+
+/**
+ * Exception thrown in case the invalid move is about to be performed
+ * 
+ * @author Michal Bejm
+ *
+ */
+public class InvalidCoordinatesException extends Exception {
+
+	private static final long serialVersionUID = -3044627974919142439L;
+
+	public InvalidCoordinatesException() {
+		super("Invalid coordinates!");
+	}
+	
+	public InvalidCoordinatesException(String message) {
+		super("Invalid coordinates! " + message);
+	}
+}
