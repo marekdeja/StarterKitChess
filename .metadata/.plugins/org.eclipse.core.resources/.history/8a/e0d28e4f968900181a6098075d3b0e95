@@ -236,12 +236,7 @@ public class PossibleMoveManager {
 			}
 			break;
 		case KING:
-			if ((Math.abs(currentx-newx)==1 || Math.abs(currentx-newx)==0) && (Math.abs(currenty-newy)==1 || Math.abs(currenty-newy)==0)){
-				return true;
-			}
-			else{
-				throw new InvalidMoveException("Invalid move for KING!");
-			}
+			break;
 		}
 		return true;
 	}

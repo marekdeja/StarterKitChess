@@ -242,6 +242,7 @@ public class PossibleMoveManager {
 			else{
 				throw new InvalidMoveException("Invalid move for KING!");
 			}
+			break;
 		}
 		return true;
 	}
