@@ -5,12 +5,11 @@ import com.capgemini.chess.algorithms.data.enums.Color;
 import com.capgemini.chess.algorithms.data.enums.Piece;
 import com.capgemini.chess.algorithms.data.enums.PieceType;
 import com.capgemini.chess.algorithms.data.generated.Board;
-import com.capgemini.chess.algorithms.implementation.exceptions.InvalidCoordinatesException;
 import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
 
 public class PossibleMoveManager {
 
-	public boolean checkMovePossibility(Coordinate from, Coordinate to, Board board) throws InvalidMoveException {
+	public static boolean checkMovePossibility(Coordinate from, Coordinate to, Board board) throws InvalidMoveException {
 
 		Piece currentPiece = board.getPieceAt(from);
 		PieceType currentPieceType = currentPiece.getType();
@@ -41,7 +40,7 @@ public class PossibleMoveManager {
 						throw new InvalidMoveException("Invalid move!");
 					}
 				} else {
-					if (newy - currenty == 1 && newx == currentx) {
+					if (newy - currenty == 1 && newx == currentx && capturedPiece==null) {
 						return true;
 					} else {
 						throw new InvalidMoveException("Invalid move!");

@@ -1,0 +1,10 @@
+package com.capgemini.chess.algorithms.implementation;
+
+public class TestPola {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

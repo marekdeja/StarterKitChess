@@ -1,0 +1,247 @@
+package com.capgemini.chess.algorithms.implementation;
+
+import com.capgemini.chess.algorithms.data.Coordinate;
+import com.capgemini.chess.algorithms.data.enums.Color;
+import com.capgemini.chess.algorithms.data.enums.Piece;
+import com.capgemini.chess.algorithms.data.enums.PieceType;
+import com.capgemini.chess.algorithms.data.generated.Board;
+import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
+
+public class PossibleMoveManager {
+
+	public boolean checkMovePossibility(Coordinate from, Coordinate to, Board board) throws InvalidMoveException {
+
+		Piece currentPiece = board.getPieceAt(from);
+		PieceType currentPieceType = currentPiece.getType();
+		Piece capturedPiece = board.getPieceAt(to);
+
+		int currentx = from.getX();
+		int currenty = from.getY();
+		int newx = to.getX();
+		int newy = to.getY();
+
+		switch (currentPieceType)
+
+		{
+		case PAWN:
+			// White Player
+			if (currentPiece.getColor() == Color.WHITE) {
+				// Capture - move diagonally
+				if ((currentx == newx - 1 || currentx == newx + 1) && currenty == newy + 1
+						&& capturedPiece.getColor() == Color.BLACK) {
+					return true;
+				}
+				// Move straight
+				if (currenty == 1) {
+					if ((newy - currenty == 1 || newy - currenty == 2) && newx == currentx
+							&& (board.getPieceAt(new Coordinate(currentx, currenty + 1))) == null) {
+						return true;
+					} else {
+						throw new InvalidMoveException("Invalid move!");
+					}
+				} else {
+					if (newy - currenty == 1 && newx == currentx) {
+						return true;
+					} else {
+						throw new InvalidMoveException("Invalid move!");
+					}
+				}
+			}
+			// Black Player
+			else {
+				// Capture - move diagonally
+				if ((currentx == newx - 1 || currentx == newx + 1) && currenty == newy - 1
+						&& capturedPiece.getColor() == Color.WHITE) {
+					return true;
+				}
+				// Move straight
+				if (currenty == 6) {
+					if ((newy - currenty == -1 || newy - currenty == -2) && newx == currentx
+							&& (board.getPieceAt(new Coordinate(currentx, currenty - 1))) == null) {
+						return true;
+					} else {
+						throw new InvalidMoveException("Invalid move!");
+					}
+				} else {
+					if (newy - currenty == -1 && newx == currentx) {
+						return true;
+					} else {
+						throw new InvalidMoveException("Invalid move!");
+					}
+				}
+
+			}
+			
+		case ROOK:
+			if (currentx == newx) {
+				if (currenty < newy) {
+					for (int i = currenty + 1; i < newy; i++) {
+						if (board.getPieceAt(new Coordinate(currentx, i)) != null) {
+							throw new InvalidMoveException();
+						}
+					}
+				} else if (currenty > newy) {
+					for (int i = newy + 1; i < currenty; i++) {
+						if (board.getPieceAt(new Coordinate(currentx, i)) != null) {
+							throw new InvalidMoveException();
+						}
+					}
+				}
+			}
+			if (currenty == newy) {
+				if (currentx < newx) {
+					for (int i = currentx + 1; i < newx; i++) {
+						if (board.getPieceAt(new Coordinate(currenty, i)) != null) {
+							throw new InvalidMoveException();
+						}
+					}
+				} else if (currentx > newx) {
+					for (int i = newx + 1; i < currentx; i++) {
+						if (board.getPieceAt(new Coordinate(currenty, i)) != null) {
+							throw new InvalidMoveException();
+						}
+					}
+				}
+			} else {
+				throw new InvalidMoveException("Invalid move for ROOK!");
+			}
+			break;
+			
+		case KNIGHT:
+			if (Math.abs(newy - currenty) == 2 && Math.abs(newx - currentx) == 1) {
+				return true;
+			}
+			if (Math.abs(newy - currenty) == 1 && Math.abs(newx - currentx) == 2) {
+				return true;
+			} else {
+				throw new InvalidMoveException("Invalid move for KNIGHT!");
+			}
+			
+		case BISHOP:
+			if (Math.abs(currenty - newy) != Math.abs(currentx - newx)) {
+				throw new InvalidMoveException("Invalid move for Bishop");
+			}
+
+			if (newx > currentx && newy > currenty) {
+				for (int i = 1; i < Math.abs(currenty - newy); i++) {
+					Coordinate clearWay = new Coordinate(currentx + i, currenty + i);
+					if (board.getPieceAt(clearWay) != null) {
+						throw new InvalidMoveException("Other piece on the way!");
+					}
+				}
+			}
+
+			if (newx > currentx && newy < currenty) {
+				for (int i = 1; i < Math.abs(currenty - newy); i++) {
+					Coordinate clearWay = new Coordinate(currentx + i, currenty - i);
+					if (board.getPieceAt(clearWay) != null) {
+						throw new InvalidMoveException("Other piece on the way!");
+					}
+				}
+			}
+
+			if (newx < currentx && newy < currenty) {
+				for (int i = 1; i < Math.abs(currenty - newy); i++) {
+					Coordinate clearWay = new Coordinate(currentx - i, currenty - i);
+					if (board.getPieceAt(clearWay) != null) {
+						throw new InvalidMoveException("Other piece on the way!");
+					}
+				}
+			}
+
+			if (newx < currentx && newy > currenty) {
+				for (int i = 1; i < Math.abs(currenty - newy); i++) {
+					Coordinate clearWay = new Coordinate(currentx - i, currenty + i);
+					if (board.getPieceAt(clearWay) != null) {
+						throw new InvalidMoveException("Other piece on the way!");
+					}
+				}
+			}
+			break;
+
+		case QUEEN:
+			// Copied form Rook
+			if (currentx == newx) {
+				if (currenty < newy) {
+					for (int i = currenty + 1; i < newy; i++) {
+						if (board.getPieceAt(new Coordinate(currentx, i)) != null) {
+							throw new InvalidMoveException();
+						}
+					}
+				} else if (currenty > newy) {
+					for (int i = newy + 1; i < currenty; i++) {
+						if (board.getPieceAt(new Coordinate(currentx, i)) != null) {
+							throw new InvalidMoveException();
+						}
+					}
+				}
+			}
+			if (currenty == newy) {
+				if (currentx < newx) {
+					for (int i = currentx + 1; i < newx; i++) {
+						if (board.getPieceAt(new Coordinate(currenty, i)) != null) {
+							throw new InvalidMoveException();
+						}
+					}
+				} else if (currentx > newx) {
+					for (int i = newx + 1; i < currentx; i++) {
+						if (board.getPieceAt(new Coordinate(currenty, i)) != null) {
+							throw new InvalidMoveException();
+						}
+					}
+				}
+			}
+			// Moves similar to Bishop
+			if (Math.abs(currenty - newy) == Math.abs(currentx - newx)) {
+				
+				// Copied from Bishop
+				if (newx > currentx && newy > currenty) {
+					for (int i = 1; i < Math.abs(currenty - newy); i++) {
+						Coordinate clearWay = new Coordinate(currentx + i, currenty + i);
+						if (board.getPieceAt(clearWay) != null) {
+							throw new InvalidMoveException("Other piece on the way!");
+						}
+					}
+				}
+
+				if (newx > currentx && newy < currenty) {
+					for (int i = 1; i < Math.abs(currenty - newy); i++) {
+						Coordinate clearWay = new Coordinate(currentx + i, currenty - i);
+						if (board.getPieceAt(clearWay) != null) {
+							throw new InvalidMoveException("Other piece on the way!");
+						}
+					}
+				}
+
+				if (newx < currentx && newy < currenty) {
+					for (int i = 1; i < Math.abs(currenty - newy); i++) {
+						Coordinate clearWay = new Coordinate(currentx - i, currenty - i);
+						if (board.getPieceAt(clearWay) != null) {
+							throw new InvalidMoveException("Other piece on the way!");
+						}
+					}
+				}
+
+				if (newx < currentx && newy > currenty) {
+					for (int i = 1; i < Math.abs(currenty - newy); i++) {
+						Coordinate clearWay = new Coordinate(currentx - i, currenty + i);
+						if (board.getPieceAt(clearWay) != null) {
+							throw new InvalidMoveException("Other piece on the way!");
+						}
+					}
+				}
+			} else {
+				throw new InvalidMoveException("Invalid move for Queen");
+			}
+			break;
+		case KING:
+			if ((Math.abs(currentx-newx)==1 || Math.abs(currentx-newx)==0) && (Math.abs(currenty-newy)==1 || Math.abs(currenty-newy)==0)){
+				return true;
+			}
+			else{
+				throw new InvalidMoveException("Invalid move for KING!");
+			}
+		}
+		return true;
+	}
+}

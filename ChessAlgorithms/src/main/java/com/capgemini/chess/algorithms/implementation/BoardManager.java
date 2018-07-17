@@ -11,7 +11,6 @@ import com.capgemini.chess.algorithms.data.enums.MoveType;
 import com.capgemini.chess.algorithms.data.enums.Piece;
 import com.capgemini.chess.algorithms.data.enums.PieceType;
 import com.capgemini.chess.algorithms.data.generated.Board;
-import com.capgemini.chess.algorithms.implementation.exceptions.InvalidCoordinatesException;
 import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
 import com.capgemini.chess.algorithms.implementation.exceptions.KingInCheckException;
 
@@ -60,9 +59,9 @@ public class BoardManager {
 	 * @return move object which includes moved piece and move type
 	 * @throws InvalidMoveException
 	 *             in case move is not valid
-	 * @throws InvalidCoordinatesException 
+	 * @throws InvalidMoveException
 	 */
-	public Move performMove(Coordinate from, Coordinate to) throws InvalidMoveException, InvalidCoordinatesException {
+	public Move performMove(Coordinate from, Coordinate to) throws InvalidMoveException, InvalidMoveException {
 
 		Move move = validateMove(from, to);
 
@@ -75,8 +74,9 @@ public class BoardManager {
 	 * Calculates state of the chess board.
 	 *
 	 * @return state of the chess board
+	 * @throws InvalidMoveException 
 	 */
-	public BoardState updateBoardState() {
+	public BoardState updateBoardState() throws InvalidMoveException {
 
 		Color nextMoveColor = calculateNextMoveColor();
 
@@ -234,57 +234,74 @@ public class BoardManager {
 	}
 
 	private Move validateMove(Coordinate from, Coordinate to)
-			throws InvalidMoveException, KingInCheckException, InvalidCoordinatesException {
+			throws InvalidMoveException, KingInCheckException, InvalidMoveException {
 		// TODO please add implementation here
-		Move currentMove = null;
-		PossibleMoveManager possibleMove = null;
-		
+		Move currentMove = new Move();
+		PossibleMoveManager possibleMove = new PossibleMoveManager();
+
 		checkGivenCoordinates(from, to);
 		currentMove.setFrom(from);
+		currentMove.setMovedPiece(this.board.getPieceAt(from));
 		currentMove.setTo(to);
 		checkMoveType(currentMove, to);
-		possibleMove.checkMovePossibility(from, to, this.board);
 		
+		possibleMove.checkMovePossibility(from, to, this.board);
 
 		return currentMove;
 	}
 
 	private boolean isKingInCheck(Color kingColor) {
-
+		
 		// TODO please add implementation here
 		return false;
 	}
 
-	// ucieczka od szacha
-	private boolean isAnyMoveValid(Color nextMoveColor) {
+	private boolean isAnyMoveValid(Color nextMoveColor) throws InvalidMoveException {
+		for (int i=0;i<8;i++){
+			for (int j=0; j<8;j++){
+				Coordinate firstCoordinate = new Coordinate(i,j);
+				for (int n=0; n<8;n++){
+					for (int m=0; m<8;m++){
+						Coordinate secondCoordinate = new Coordinate (n,m);
+						return PossibleMoveManager.checkMovePossibility(firstCoordinate, secondCoordinate, this.board);
+					}
+				}
+				
+			}
+		}
 
 		// TODO please add implementation here
 
 		return false;
 	}
 
-	private boolean checkGivenCoordinates(Coordinate from, Coordinate to) throws InvalidCoordinatesException {
+	private boolean checkGivenCoordinates(Coordinate from, Coordinate to) throws InvalidMoveException {
 		if (from.equals(to)) {
-			throw new InvalidCoordinatesException("Start coordinates are equal to end coordinates!");
+			throw new InvalidMoveException("Start coordinates are equal to end coordinates!");
 		}
 		// out of board - start coordinate
 		if (from.getX() < 0 || from.getX() > 7 || from.getY() < 0 || from.getY() > 7) {
-			throw new InvalidCoordinatesException("Start coordinates out of the board");
+			throw new InvalidMoveException("Start coordinates out of the board");
 		}
 		// out of board - end coordinate
 		if (to.getX() < 0 || to.getX() > 7 || to.getY() < 0 || to.getY() > 7) {
-			throw new InvalidCoordinatesException("End coordinates out of the board");
+			throw new InvalidMoveException("End coordinates out of the board");
+		}
+		//from is empty
+		if (this.board.getPieceAt(from) == null){
+			throw new InvalidMoveException("Start spot is empty");
 		}
 		// piece belongs to player at end coordinates
-		if (this.board.getPieceAt(to).getColor() == Color.BLACK && calculateNextMoveColor() == Color.WHITE) {
-			throw new InvalidCoordinatesException("There is your piece at given end coordinates");
+		if (this.board.getPieceAt(to) != null) {
+			if (this.board.getPieceAt(to).getColor() == this.board.getPieceAt(from).getColor()) {
+				throw new InvalidMoveException("There is your piece at given end coordinates");
+			}
 		}
 		// piece does not belongs to a player at start coordinates
-		if (this.board.getPieceAt(from).getColor() == Color.BLACK && calculateNextMoveColor() == Color.BLACK) {
-			throw new InvalidCoordinatesException("At start coordinates the piece does not belong to you");
+		if (this.board.getPieceAt(from).getColor() != calculateNextMoveColor()) {
+			throw new InvalidMoveException("At start coordinates the piece does not belong to you");
 		}
-		// possibility for given move depending on piece
-		// czy pole jest puste, czy bedzie zbicie
+		
 
 		return true;
 	}
@@ -299,8 +316,6 @@ public class BoardManager {
 		return currentMove.getType();
 
 	}
-
-	
 
 	private Color calculateNextMoveColor() {
 		if (this.board.getMoveHistory().size() % 2 == 0) {
