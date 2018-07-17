@@ -256,7 +256,6 @@ public class BoardManager {
 	}
 
 	private boolean isKingInCheck(Color kingColor) throws InvalidMoveException {
-		// TODO please add implementation here
 		// Koordynaty krola
 		Piece checkedKing;
 		Coordinate kingCoordinate = null;
@@ -271,21 +270,34 @@ public class BoardManager {
 			}
 		}
 		// Koordynaty kazdego mozliwego ataku
+		ArrayList captureRoutes = new ArrayList();
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Piece temporaryPiece = this.board.getPieceAt(new Coordinate(i, j));
 				if (temporaryPiece.getColor() != kingColor) {
 					PossibleMoveManager possibleMove = new PossibleMoveManager();
-					if(possibleMove.checkMovePossibility(new Coordinate(i,j), kingCoordinate, this.board)){
-					return true;	
-					}
+					possibleMove.checkMovePossibility(new Coordinate(i,j), kingCoordinate, this.board);
 					
-				}else{
-				return false;
+					/*switch (temporaryPiece.getType()) {
+					case PAWN:
+						if (kingColor == Color.BLACK) {
+							captureRoutes.add(new Coordinate(i+1, j + 1));
+							captureRoutes.add(new Coordinate(i+1, j - 1));
+						}
+						if (kingColor == Color.WHITE) {
+							captureRoutes.add(new Coordinate(i-1, j - 1));
+							captureRoutes.add(new Coordinate(i-1, j + 1));
+						}
+					default:
+						
+					}
+					*/
 				}
 			}
 
 		}
+
+		// TODO please add implementation here
 		return false;
 	}
 

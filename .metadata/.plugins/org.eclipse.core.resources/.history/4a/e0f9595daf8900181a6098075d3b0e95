@@ -1,6 +1,5 @@
 package com.capgemini.chess.algorithms.implementation;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -75,7 +74,7 @@ public class BoardManager {
 	 * Calculates state of the chess board.
 	 *
 	 * @return state of the chess board
-	 * @throws InvalidMoveException
+	 * @throws InvalidMoveException 
 	 */
 	public BoardState updateBoardState() throws InvalidMoveException {
 
@@ -245,64 +244,33 @@ public class BoardManager {
 		currentMove.setMovedPiece(this.board.getPieceAt(from));
 		currentMove.setTo(to);
 		checkMoveType(currentMove, to);
-
-		possibleMove.checkMovePossibility(from, to, this.board);
-		if (possibleMove.checkMovePossibility(from, to, this.board)==false){
-			throw new InvalidMoveException();
-		}
 		
+		possibleMove.checkMovePossibility(from, to, this.board);
 
 		return currentMove;
 	}
 
-	private boolean isKingInCheck(Color kingColor) throws InvalidMoveException {
+	private boolean isKingInCheck(Color kingColor) {
+		
 		// TODO please add implementation here
-		// Koordynaty krola
-		Piece checkedKing;
-		Coordinate kingCoordinate = null;
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				Piece myKing = this.board.getPieceAt(new Coordinate(i, j));
-				if (myKing.getType() == PieceType.KING && myKing.getColor() == kingColor) {
-					checkedKing = myKing;
-					kingCoordinate = new Coordinate(i,j);
-					break; // odnosi sie do for czy if??
-				}
-			}
-		}
-		// Koordynaty kazdego mozliwego ataku
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				Piece temporaryPiece = this.board.getPieceAt(new Coordinate(i, j));
-				if (temporaryPiece.getColor() != kingColor) {
-					PossibleMoveManager possibleMove = new PossibleMoveManager();
-					if(possibleMove.checkMovePossibility(new Coordinate(i,j), kingCoordinate, this.board)){
-					return true;	
-					}
-					
-				}else{
-				return false;
-				}
-			}
-
-		}
 		return false;
 	}
 
 	private boolean isAnyMoveValid(Color nextMoveColor) throws InvalidMoveException {
-		// TODO please add implementation here
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				Coordinate firstCoordinate = new Coordinate(i, j);
-				for (int n = 0; n < 8; n++) {
-					for (int m = 0; m < 8; m++) {
-						Coordinate secondCoordinate = new Coordinate(n, m);
+		for (int i=0;i<8;i++){
+			for (int j=0; j<8;j++){
+				Coordinate firstCoordinate = new Coordinate(i,j);
+				for (int n=0; n<8;n++){
+					for (int m=0; m<8;m++){
+						Coordinate secondCoordinate = new Coordinate (n,m);
 						return PossibleMoveManager.checkMovePossibility(firstCoordinate, secondCoordinate, this.board);
 					}
 				}
-
+				
 			}
 		}
+
+		// TODO please add implementation here
 
 		return false;
 	}
@@ -319,8 +287,8 @@ public class BoardManager {
 		if (to.getX() < 0 || to.getX() > 7 || to.getY() < 0 || to.getY() > 7) {
 			throw new InvalidMoveException("End coordinates out of the board");
 		}
-		// from is empty
-		if (this.board.getPieceAt(from) == null) {
+		//from is empty
+		if (this.board.getPieceAt(from) == null){
 			throw new InvalidMoveException("Start spot is empty");
 		}
 		// piece belongs to player at end coordinates
@@ -333,6 +301,7 @@ public class BoardManager {
 		if (this.board.getPieceAt(from).getColor() != calculateNextMoveColor()) {
 			throw new InvalidMoveException("At start coordinates the piece does not belong to you");
 		}
+		
 
 		return true;
 	}

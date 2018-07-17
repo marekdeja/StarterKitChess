@@ -37,13 +37,13 @@ public class PossibleMoveManager {
 							&& (board.getPieceAt(new Coordinate(currentx, currenty + 1))) == null) {
 						return true;
 					} else {
-						return false;
+						throw new InvalidMoveException("Invalid move!");
 					}
 				} else {
 					if (newy - currenty == 1 && newx == currentx && capturedPiece==null) {
 						return true;
 					} else {
-						return false;
+						throw new InvalidMoveException("Invalid move!");
 					}
 				}
 			}
@@ -60,13 +60,13 @@ public class PossibleMoveManager {
 							&& (board.getPieceAt(new Coordinate(currentx, currenty - 1))) == null) {
 						return true;
 					} else {
-						return false;
+						throw new InvalidMoveException("Invalid move!");
 					}
 				} else {
 					if (newy - currenty == -1 && newx == currentx) {
 						return true;
 					} else {
-						return false;
+						throw new InvalidMoveException("Invalid move!");
 					}
 				}
 
@@ -77,13 +77,13 @@ public class PossibleMoveManager {
 				if (currenty < newy) {
 					for (int i = currenty + 1; i < newy; i++) {
 						if (board.getPieceAt(new Coordinate(currentx, i)) != null) {
-							return false;
+							throw new InvalidMoveException();
 						}
 					}
 				} else if (currenty > newy) {
 					for (int i = newy + 1; i < currenty; i++) {
 						if (board.getPieceAt(new Coordinate(currentx, i)) != null) {
-							return false;
+							throw new InvalidMoveException();
 						}
 					}
 				}
@@ -92,18 +92,18 @@ public class PossibleMoveManager {
 				if (currentx < newx) {
 					for (int i = currentx + 1; i < newx; i++) {
 						if (board.getPieceAt(new Coordinate(currenty, i)) != null) {
-							return false;
+							throw new InvalidMoveException();
 						}
 					}
 				} else if (currentx > newx) {
 					for (int i = newx + 1; i < currentx; i++) {
 						if (board.getPieceAt(new Coordinate(currenty, i)) != null) {
-							return false;
+							throw new InvalidMoveException();
 						}
 					}
 				}
 			} else {
-				return false;
+				throw new InvalidMoveException("Invalid move for ROOK!");
 			}
 			break;
 			
@@ -114,19 +114,19 @@ public class PossibleMoveManager {
 			if (Math.abs(newy - currenty) == 1 && Math.abs(newx - currentx) == 2) {
 				return true;
 			} else {
-				return false;
+				throw new InvalidMoveException("Invalid move for KNIGHT!");
 			}
 			
 		case BISHOP:
 			if (Math.abs(currenty - newy) != Math.abs(currentx - newx)) {
-				return false;
+				throw new InvalidMoveException("Invalid move for Bishop");
 			}
 
 			if (newx > currentx && newy > currenty) {
 				for (int i = 1; i < Math.abs(currenty - newy); i++) {
 					Coordinate clearWay = new Coordinate(currentx + i, currenty + i);
 					if (board.getPieceAt(clearWay) != null) {
-						return false;
+						throw new InvalidMoveException("Other piece on the way!");
 					}
 				}
 			}
@@ -135,7 +135,7 @@ public class PossibleMoveManager {
 				for (int i = 1; i < Math.abs(currenty - newy); i++) {
 					Coordinate clearWay = new Coordinate(currentx + i, currenty - i);
 					if (board.getPieceAt(clearWay) != null) {
-						return false;
+						throw new InvalidMoveException("Other piece on the way!");
 					}
 				}
 			}
@@ -144,7 +144,7 @@ public class PossibleMoveManager {
 				for (int i = 1; i < Math.abs(currenty - newy); i++) {
 					Coordinate clearWay = new Coordinate(currentx - i, currenty - i);
 					if (board.getPieceAt(clearWay) != null) {
-						return false;
+						throw new InvalidMoveException("Other piece on the way!");
 					}
 				}
 			}
@@ -153,7 +153,7 @@ public class PossibleMoveManager {
 				for (int i = 1; i < Math.abs(currenty - newy); i++) {
 					Coordinate clearWay = new Coordinate(currentx - i, currenty + i);
 					if (board.getPieceAt(clearWay) != null) {
-						return false;
+						throw new InvalidMoveException("Other piece on the way!");
 					}
 				}
 			}
@@ -165,13 +165,13 @@ public class PossibleMoveManager {
 				if (currenty < newy) {
 					for (int i = currenty + 1; i < newy; i++) {
 						if (board.getPieceAt(new Coordinate(currentx, i)) != null) {
-							return false;
+							throw new InvalidMoveException();
 						}
 					}
 				} else if (currenty > newy) {
 					for (int i = newy + 1; i < currenty; i++) {
 						if (board.getPieceAt(new Coordinate(currentx, i)) != null) {
-							return false;
+							throw new InvalidMoveException();
 						}
 					}
 				}
@@ -180,13 +180,13 @@ public class PossibleMoveManager {
 				if (currentx < newx) {
 					for (int i = currentx + 1; i < newx; i++) {
 						if (board.getPieceAt(new Coordinate(currenty, i)) != null) {
-							return false;
+							throw new InvalidMoveException();
 						}
 					}
 				} else if (currentx > newx) {
 					for (int i = newx + 1; i < currentx; i++) {
 						if (board.getPieceAt(new Coordinate(currenty, i)) != null) {
-							return false;
+							throw new InvalidMoveException();
 						}
 					}
 				}
@@ -199,7 +199,7 @@ public class PossibleMoveManager {
 					for (int i = 1; i < Math.abs(currenty - newy); i++) {
 						Coordinate clearWay = new Coordinate(currentx + i, currenty + i);
 						if (board.getPieceAt(clearWay) != null) {
-							return false;
+							throw new InvalidMoveException("Other piece on the way!");
 						}
 					}
 				}
@@ -208,7 +208,7 @@ public class PossibleMoveManager {
 					for (int i = 1; i < Math.abs(currenty - newy); i++) {
 						Coordinate clearWay = new Coordinate(currentx + i, currenty - i);
 						if (board.getPieceAt(clearWay) != null) {
-							return false;
+							throw new InvalidMoveException("Other piece on the way!");
 						}
 					}
 				}
@@ -217,7 +217,7 @@ public class PossibleMoveManager {
 					for (int i = 1; i < Math.abs(currenty - newy); i++) {
 						Coordinate clearWay = new Coordinate(currentx - i, currenty - i);
 						if (board.getPieceAt(clearWay) != null) {
-							return false;
+							throw new InvalidMoveException("Other piece on the way!");
 						}
 					}
 				}
@@ -226,12 +226,12 @@ public class PossibleMoveManager {
 					for (int i = 1; i < Math.abs(currenty - newy); i++) {
 						Coordinate clearWay = new Coordinate(currentx - i, currenty + i);
 						if (board.getPieceAt(clearWay) != null) {
-							return false;
+							throw new InvalidMoveException("Other piece on the way!");
 						}
 					}
 				}
 			} else {
-				return false;
+				throw new InvalidMoveException("Invalid move for Queen");
 			}
 			break;
 		case KING:
@@ -239,7 +239,7 @@ public class PossibleMoveManager {
 				return true;
 			}
 			else{
-				return false;
+				throw new InvalidMoveException("Invalid move for KING!");
 			}
 		}
 		return true;

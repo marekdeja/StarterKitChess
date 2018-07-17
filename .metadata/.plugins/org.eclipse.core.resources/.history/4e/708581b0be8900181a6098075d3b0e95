@@ -246,8 +246,7 @@ public class BoardManager {
 		currentMove.setTo(to);
 		checkMoveType(currentMove, to);
 
-		possibleMove.checkMovePossibility(from, to, this.board);
-		if (possibleMove.checkMovePossibility(from, to, this.board)==false){
+		if (!(possibleMove.checkMovePossibility(from, to, this.board))){
 			throw new InvalidMoveException();
 		}
 		
@@ -255,37 +254,43 @@ public class BoardManager {
 		return currentMove;
 	}
 
-	private boolean isKingInCheck(Color kingColor) throws InvalidMoveException {
-		// TODO please add implementation here
+	private boolean isKingInCheck(Color kingColor) {
 		// Koordynaty krola
 		Piece checkedKing;
-		Coordinate kingCoordinate = null;
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Piece myKing = this.board.getPieceAt(new Coordinate(i, j));
 				if (myKing.getType() == PieceType.KING && myKing.getColor() == kingColor) {
 					checkedKing = myKing;
-					kingCoordinate = new Coordinate(i,j);
 					break; // odnosi sie do for czy if??
 				}
 			}
 		}
 		// Koordynaty kazdego mozliwego ataku
+		/*ArrayList captureRoutes = new ArrayList();
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Piece temporaryPiece = this.board.getPieceAt(new Coordinate(i, j));
 				if (temporaryPiece.getColor() != kingColor) {
-					PossibleMoveManager possibleMove = new PossibleMoveManager();
-					if(possibleMove.checkMovePossibility(new Coordinate(i,j), kingCoordinate, this.board)){
-					return true;	
+
+					switch (temporaryPiece.getType()) {
+					case PAWN:
+						if (kingColor == Color.BLACK) {
+							captureRoutes.add(new Coordinate(i+1, j + 1));
+							captureRoutes.add(new Coordinate(i+1, j - 1));
+						}
+						if (kingColor == Color.WHITE) {
+							captureRoutes.add(new Coordinate(i-1, j - 1));
+							captureRoutes.add(new Coordinate(i-1, j + 1));
+						}
+					case 
 					}
-					
-				}else{
-				return false;
 				}
 			}
 
-		}
+		}*/
+
+		// TODO please add implementation here
 		return false;
 	}
 
