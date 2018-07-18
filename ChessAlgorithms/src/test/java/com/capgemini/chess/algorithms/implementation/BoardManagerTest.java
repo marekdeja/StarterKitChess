@@ -631,7 +631,6 @@ public class BoardManagerTest {
 		board.setPieceAt(Piece.WHITE_KING, new Coordinate(4, 0));
 		board.setPieceAt(Piece.WHITE_BISHOP, new Coordinate(4, 5));
 		board.setPieceAt(Piece.BLACK_ROOK, new Coordinate(4, 7));
-		
 		// when
 		BoardManager boardManager = new BoardManager(board);
 		boolean exceptionThrown = false;
@@ -640,7 +639,6 @@ public class BoardManagerTest {
 		} catch (InvalidMoveException e) {
 			exceptionThrown = e instanceof KingInCheckException;
 		}
-		
 		// then 
 		assertTrue(exceptionThrown);
 	}

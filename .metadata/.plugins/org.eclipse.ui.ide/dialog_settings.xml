@@ -2,7 +2,7 @@
 <section name="Workbench">
 	<section name="org.springsource.ide.eclipse.commons.quicksearch.ui.QuickSearchDialog.DIALOG_SETTINGS">
 		<item value="true" key="CASE_SENSITIVE"/>
-		<item value="empt" key="LAST_QUERY"/>
+		<item value="getB" key="LAST_QUERY"/>
 		<list key="SASH_WEIGHTS">
 			<item value="833"/>
 			<item value="166"/>
@@ -10,7 +10,7 @@
 		<list key="COLUMN_WIDTHS">
 			<item value="40"/>
 			<item value="400"/>
-			<item value="110"/>
+			<item value="89"/>
 		</list>
 		<section name="DialogBoundsSettings">
 			<item value="600" key="DIALOG_WIDTH"/>

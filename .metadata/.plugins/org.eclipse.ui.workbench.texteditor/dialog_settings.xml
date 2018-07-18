@@ -6,19 +6,20 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="isKing" key="selection"/>
+		<item value="" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="regula"/>
+			<item value="dummy"/>
+			<item value="validate"/>
+			<item value="performMove"/>
+			<item value="perfomMove"/>
+			<item value="kingincheckexc"/>
+			<item value="checkmove"/>
 			<item value="isking"/>
-			<item value="calculateNext"/>
-			<item value=", InvalidCoordinatesException"/>
-			<item value="throws InvalidCoordinatesException"/>
-			<item value="InvalidCoordinatesException"/>
-			<item value="Coordinates"/>
-			<item value="coordinates"/>
 		</list>
 		<list key="replacehistory">
 			<item value=" "/>

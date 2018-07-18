@@ -1,0 +1,2 @@
+2018-07-18 13:42:52,084 [Worker-10] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/junit/junit/4.12/junit-4.12-sources.jar
+2018-07-18 13:42:52,312 [Worker-10] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/junit/junit/4.12/junit-4.12-sources.jar

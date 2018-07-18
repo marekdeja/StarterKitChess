@@ -19,6 +19,7 @@ public class PossibleMoveManager {
 		int currenty = from.getY();
 		int newx = to.getX();
 		int newy = to.getY();
+	
 
 		switch (currentPieceType)
 
@@ -34,7 +35,7 @@ public class PossibleMoveManager {
 				// Move straight
 				if (currenty == 1) {
 					if ((newy - currenty == 1 || newy - currenty == 2) && newx == currentx
-							&& (board.getPieceAt(new Coordinate(currentx, currenty + 1))) == null) {
+							&& (board.getPieceAt(new Coordinate(currentx, currenty + 1))) == null && capturedPiece==null) {
 						return true;
 					} else {
 						return false;
@@ -57,7 +58,7 @@ public class PossibleMoveManager {
 				// Move straight
 				if (currenty == 6) {
 					if ((newy - currenty == -1 || newy - currenty == -2) && newx == currentx
-							&& (board.getPieceAt(new Coordinate(currentx, currenty - 1))) == null) {
+							&& (board.getPieceAt(new Coordinate(currentx, currenty - 1))) == null && capturedPiece==null) {
 						return true;
 					} else {
 						return false;
@@ -73,6 +74,7 @@ public class PossibleMoveManager {
 			}
 			
 		case ROOK:
+			System.out.println("ROok");
 			if (currentx == newx) {
 				if (currenty < newy) {
 					for (int i = currenty + 1; i < newy; i++) {
@@ -80,12 +82,14 @@ public class PossibleMoveManager {
 							return false;
 						}
 					}
+					return true;
 				} else if (currenty > newy) {
 					for (int i = newy + 1; i < currenty; i++) {
 						if (board.getPieceAt(new Coordinate(currentx, i)) != null) {
 							return false;
 						}
 					}
+					return true;
 				}
 			}
 			if (currenty == newy) {
@@ -95,16 +99,16 @@ public class PossibleMoveManager {
 							return false;
 						}
 					}
+					return true;
 				} else if (currentx > newx) {
 					for (int i = newx + 1; i < currentx; i++) {
 						if (board.getPieceAt(new Coordinate(currenty, i)) != null) {
 							return false;
 						}
 					}
+					return true;
 				}
-			} else {
-				return false;
-			}
+			} 
 			break;
 			
 		case KNIGHT:

@@ -63,9 +63,7 @@ public class BoardManager {
 	 * @throws InvalidMoveException
 	 */
 	public Move performMove(Coordinate from, Coordinate to) throws InvalidMoveException, InvalidMoveException {
-
 		Move move = validateMove(from, to);
-
 		addMove(move);
 
 		return move;
@@ -240,17 +238,33 @@ public class BoardManager {
 		Move currentMove = new Move();
 		PossibleMoveManager possibleMove = new PossibleMoveManager();
 
-		checkGivenCoordinates(from, to);
+		if (!(checkGivenCoordinates(from, to))) {
+			throw new InvalidMoveException("Invalid coordinates");
+		}
+
 		currentMove.setFrom(from);
 		currentMove.setMovedPiece(this.board.getPieceAt(from));
 		currentMove.setTo(to);
-		checkMoveType(currentMove, to);
+		currentMove.setType(checkMoveType(from, to));
 
 		possibleMove.checkMovePossibility(from, to, this.board);
-		if (possibleMove.checkMovePossibility(from, to, this.board)==false){
+		if (possibleMove.checkMovePossibility(from, to, this.board) == false) {
 			throw new InvalidMoveException();
 		}
-		
+		System.out.println("King check ------------------------------------");
+
+		this.board.setPieceAt(this.board.getPieceAt(from), to);
+		this.board.setPieceAt(null, currentMove.getFrom());
+
+		if (isKingInCheck(Color.WHITE)) {
+			throw new KingInCheckException();
+		}
+		if (isKingInCheck(Color.BLACK)) {
+			throw new KingInCheckException();
+		}
+
+		this.board.setPieceAt(this.board.getPieceAt(to), from);
+		this.board.setPieceAt(null, currentMove.getTo());
 
 		return currentMove;
 	}
@@ -263,25 +277,41 @@ public class BoardManager {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Piece myKing = this.board.getPieceAt(new Coordinate(i, j));
-				if (myKing.getType() == PieceType.KING && myKing.getColor() == kingColor) {
-					checkedKing = myKing;
-					kingCoordinate = new Coordinate(i,j);
-					break; // odnosi sie do for czy if??
+				if (myKing != null) {
+					if (myKing.getType() == PieceType.KING && myKing.getColor() == kingColor) {
+						checkedKing = myKing;
+						kingCoordinate = new Coordinate(i, j);
+						System.out.println("Kro koordynaty" + i + " " + j);
+					}
 				}
 			}
 		}
+		System.out.println("Mam krola");
 		// Koordynaty kazdego mozliwego ataku
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Piece temporaryPiece = this.board.getPieceAt(new Coordinate(i, j));
-				if (temporaryPiece.getColor() != kingColor) {
+
+				if (temporaryPiece != null && temporaryPiece.getColor() == kingColor) {
+					System.out.println("Biale na planszy" + i + " " + j);
+				}
+
+				if (temporaryPiece != null && temporaryPiece.getColor() != kingColor) {
+					System.out.println("Atakaujacy" + i + " " + j);
 					PossibleMoveManager possibleMove = new PossibleMoveManager();
-					if(possibleMove.checkMovePossibility(new Coordinate(i,j), kingCoordinate, this.board)){
-					return true;	
-					}
+					Coordinate attackerCoordinate = new Coordinate(i, j);
 					
-				}else{
-				return false;
+					if(kingCoordinate==null){
+						return false;
+					}
+
+					if (possibleMove.checkMovePossibility(attackerCoordinate, kingCoordinate, this.board)) {
+						System.out.println(i + " JEST Szach" + j);
+						return true;
+					} else {
+						System.out.println("Nie ma szacha");
+						return false;
+					}
 				}
 			}
 
@@ -293,14 +323,25 @@ public class BoardManager {
 		// TODO please add implementation here
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
+
 				Coordinate firstCoordinate = new Coordinate(i, j);
-				for (int n = 0; n < 8; n++) {
-					for (int m = 0; m < 8; m++) {
-						Coordinate secondCoordinate = new Coordinate(n, m);
-						return PossibleMoveManager.checkMovePossibility(firstCoordinate, secondCoordinate, this.board);
+				System.out.println("First coord " + i +" "+j);
+				if (this.board.getPieceAt(firstCoordinate) != null && this.board.getPieceAt(firstCoordinate).getColor()==nextMoveColor) {
+					for (int n = 0; n < 8; n++) {
+						for (int m = 0; m < 8; m++) {
+							Coordinate secondCoordinate = new Coordinate(n, m);
+							System.out.println("nm" + n +" "+m);
+							if (checkGivenCoordinates(firstCoordinate, secondCoordinate)) {
+								System.out.println("Checkcoordinates " + n +" "+m);
+								if( PossibleMoveManager.checkMovePossibility(firstCoordinate, secondCoordinate,
+										this.board)){
+									System.out.println("mozna zrobic ruch z " + i +"," + j +"do"+n+","+m);
+									return true;
+								};
+							}
+						}
 					}
 				}
-
 			}
 		}
 
@@ -309,42 +350,42 @@ public class BoardManager {
 
 	private boolean checkGivenCoordinates(Coordinate from, Coordinate to) throws InvalidMoveException {
 		if (from.equals(to)) {
-			throw new InvalidMoveException("Start coordinates are equal to end coordinates!");
+			return false;
 		}
 		// out of board - start coordinate
 		if (from.getX() < 0 || from.getX() > 7 || from.getY() < 0 || from.getY() > 7) {
-			throw new InvalidMoveException("Start coordinates out of the board");
+			return false;
 		}
 		// out of board - end coordinate
 		if (to.getX() < 0 || to.getX() > 7 || to.getY() < 0 || to.getY() > 7) {
-			throw new InvalidMoveException("End coordinates out of the board");
+			return false;
 		}
 		// from is empty
 		if (this.board.getPieceAt(from) == null) {
-			throw new InvalidMoveException("Start spot is empty");
+			return false;
 		}
 		// piece belongs to player at end coordinates
 		if (this.board.getPieceAt(to) != null) {
 			if (this.board.getPieceAt(to).getColor() == this.board.getPieceAt(from).getColor()) {
-				throw new InvalidMoveException("There is your piece at given end coordinates");
+				return false;
 			}
 		}
 		// piece does not belongs to a player at start coordinates
 		if (this.board.getPieceAt(from).getColor() != calculateNextMoveColor()) {
-			throw new InvalidMoveException("At start coordinates the piece does not belong to you");
+			return false;
 		}
 
 		return true;
 	}
 
-	private MoveType checkMoveType(Move currentMove, Coordinate to) {
+	private MoveType checkMoveType(Coordinate from, Coordinate to) {
 		if (this.board.getPieceAt(to) == null) {
-			currentMove.setType(MoveType.ATTACK);
+			return MoveType.ATTACK;
 		}
 		if (this.board.getPieceAt(to) != null) {
-			currentMove.setType(MoveType.CAPTURE);
+			return MoveType.CAPTURE;
 		}
-		return currentMove.getType();
+		return null;
 
 	}
 
