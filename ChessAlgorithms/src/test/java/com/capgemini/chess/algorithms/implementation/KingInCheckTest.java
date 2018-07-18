@@ -28,30 +28,21 @@ public class KingInCheckTest {
 	public void testUpdateBoardStateCheckMate() throws InvalidMoveException {
 		// given
 		Board board = new Board();
+
 		board.getMoveHistory().add(createDummyMove(board));
 		board.setPieceAt(Piece.WHITE_ROOK, new Coordinate(0, 1));
 		board.setPieceAt(Piece.WHITE_ROOK, new Coordinate(1, 0));
 		board.setPieceAt(Piece.BLACK_KING, new Coordinate(4, 0));
-		
 		// when
 		BoardManager boardManager = new BoardManager(board);
 		BoardState boardState = boardManager.updateBoardState();
-		
 		// then
 		assertEquals(BoardState.CHECK_MATE, boardState);
 	}
 	
-	@Test
-	public void testUpdateBoardStateRegular() throws InvalidMoveException {
-		// given
-		BoardManager boardManager = new BoardManager();
-		
-		// when
-		BoardState boardState = boardManager.updateBoardState();
-		
-		// then
-		assertEquals(BoardState.REGULAR, boardState);
-	}
+	
+	
+
 
 	private Move createDummyMove(Board board) {
 

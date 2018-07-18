@@ -74,7 +74,6 @@ public class PossibleMoveManager {
 			}
 			
 		case ROOK:
-			System.out.println("ROok");
 			if (currentx == newx) {
 				if (currenty < newy) {
 					for (int i = currenty + 1; i < newy; i++) {

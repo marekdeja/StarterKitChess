@@ -81,7 +81,6 @@ public class BoardManager {
 
 		boolean isKingInCheck = isKingInCheck(nextMoveColor);
 		boolean isAnyMoveValid = isAnyMoveValid(nextMoveColor);
-
 		BoardState boardState;
 		if (isKingInCheck) {
 			if (isAnyMoveValid) {
@@ -247,11 +246,12 @@ public class BoardManager {
 		currentMove.setTo(to);
 		currentMove.setType(checkMoveType(from, to));
 
+		
+		
 		possibleMove.checkMovePossibility(from, to, this.board);
 		if (possibleMove.checkMovePossibility(from, to, this.board) == false) {
 			throw new InvalidMoveException();
 		}
-		System.out.println("King check ------------------------------------");
 
 		this.board.setPieceAt(this.board.getPieceAt(from), to);
 		this.board.setPieceAt(null, currentMove.getFrom());
@@ -281,23 +281,19 @@ public class BoardManager {
 					if (myKing.getType() == PieceType.KING && myKing.getColor() == kingColor) {
 						checkedKing = myKing;
 						kingCoordinate = new Coordinate(i, j);
-						System.out.println("Kro koordynaty" + i + " " + j);
 					}
 				}
 			}
 		}
-		System.out.println("Mam krola");
 		// Koordynaty kazdego mozliwego ataku
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Piece temporaryPiece = this.board.getPieceAt(new Coordinate(i, j));
 
 				if (temporaryPiece != null && temporaryPiece.getColor() == kingColor) {
-					System.out.println("Biale na planszy" + i + " " + j);
 				}
 
 				if (temporaryPiece != null && temporaryPiece.getColor() != kingColor) {
-					System.out.println("Atakaujacy" + i + " " + j);
 					PossibleMoveManager possibleMove = new PossibleMoveManager();
 					Coordinate attackerCoordinate = new Coordinate(i, j);
 					
@@ -306,10 +302,8 @@ public class BoardManager {
 					}
 
 					if (possibleMove.checkMovePossibility(attackerCoordinate, kingCoordinate, this.board)) {
-						System.out.println(i + " JEST Szach" + j);
 						return true;
 					} else {
-						System.out.println("Nie ma szacha");
 						return false;
 					}
 				}
@@ -321,21 +315,42 @@ public class BoardManager {
 
 	private boolean isAnyMoveValid(Color nextMoveColor) throws InvalidMoveException {
 		// TODO please add implementation here
+		System.out.println("zaczynam co jest w 2, 1" + this.board.getPieceAt(new Coordinate(2,1)));
+		
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 
 				Coordinate firstCoordinate = new Coordinate(i, j);
-				System.out.println("First coord " + i +" "+j);
+			
 				if (this.board.getPieceAt(firstCoordinate) != null && this.board.getPieceAt(firstCoordinate).getColor()==nextMoveColor) {
 					for (int n = 0; n < 8; n++) {
 						for (int m = 0; m < 8; m++) {
 							Coordinate secondCoordinate = new Coordinate(n, m);
-							System.out.println("nm" + n +" "+m);
 							if (checkGivenCoordinates(firstCoordinate, secondCoordinate)) {
-								System.out.println("Checkcoordinates " + n +" "+m);
-								if( PossibleMoveManager.checkMovePossibility(firstCoordinate, secondCoordinate,
-										this.board)){
-									System.out.println("mozna zrobic ruch z " + i +"," + j +"do"+n+","+m);
+								
+								if( PossibleMoveManager.checkMovePossibility(firstCoordinate, secondCoordinate,	this.board)){
+									
+									Move currentMove = new Move();
+									
+									currentMove.setFrom(firstCoordinate);
+									currentMove.setMovedPiece(this.board.getPieceAt(firstCoordinate));
+									currentMove.setTo(secondCoordinate);
+									currentMove.setType(checkMoveType(firstCoordinate, secondCoordinate));
+									
+									this.board.setPieceAt(this.board.getPieceAt(firstCoordinate), secondCoordinate);
+									this.board.setPieceAt(null, currentMove.getFrom());
+
+									if (isKingInCheck(Color.WHITE)) {
+										return false;
+									}
+									if (isKingInCheck(Color.BLACK)) {
+										return false;
+									}
+
+									this.board.setPieceAt(this.board.getPieceAt(secondCoordinate), firstCoordinate);
+									this.board.setPieceAt(null, currentMove.getTo());
+									
+									System.out.println("co jest drugim koordynacie" + this.board.getPieceAt(secondCoordinate) + secondCoordinate.getX()  + secondCoordinate.getY());
 									return true;
 								};
 							}

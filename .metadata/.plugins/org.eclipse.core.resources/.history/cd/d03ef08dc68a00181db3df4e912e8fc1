@@ -1,0 +1,73 @@
+package com.capgemini.chess.algorithms.implementation;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
+import com.capgemini.chess.algorithms.data.Coordinate;
+import com.capgemini.chess.algorithms.data.Move;
+import com.capgemini.chess.algorithms.data.enums.BoardState;
+import com.capgemini.chess.algorithms.data.enums.MoveType;
+import com.capgemini.chess.algorithms.data.enums.Piece;
+import com.capgemini.chess.algorithms.data.generated.Board;
+import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
+import com.capgemini.chess.algorithms.implementation.exceptions.KingInCheckException;
+
+/**
+ * Test class for testing {@link BoardManager}
+ * 
+ * @author Michal Bejm
+ *
+ */
+public class KingInCheckTest {
+
+	@Test
+	public void testUpdateBoardStateCheckMate() throws InvalidMoveException {
+		// given
+		Board board = new Board();
+		board.getMoveHistory().add(createDummyMove(board));
+		board.setPieceAt(Piece.WHITE_ROOK, new Coordinate(0, 1));
+		board.setPieceAt(Piece.WHITE_ROOK, new Coordinate(1, 0));
+		board.setPieceAt(Piece.BLACK_KING, new Coordinate(4, 0));
+		
+		// when
+		BoardManager boardManager = new BoardManager(board);
+		BoardState boardState = boardManager.updateBoardState();
+		
+		// then
+		assertEquals(BoardState.CHECK_MATE, boardState);
+	}
+	
+	@Test
+	public void testUpdateBoardStateRegular() throws InvalidMoveException {
+		// given
+		BoardManager boardManager = new BoardManager();
+		
+		// when
+		BoardState boardState = boardManager.updateBoardState();
+		
+		// then
+		assertEquals(BoardState.REGULAR, boardState);
+	}
+
+	private Move createDummyMove(Board board) {
+
+		Move move = new Move();
+
+		if (board.getMoveHistory().size() % 2 == 0) {
+			board.setPieceAt(Piece.WHITE_ROOK, new Coordinate(0, 0));
+			move.setMovedPiece(Piece.WHITE_ROOK);
+		} else {
+			board.setPieceAt(Piece.BLACK_ROOK, new Coordinate(0, 0));
+			move.setMovedPiece(Piece.BLACK_ROOK);
+		}
+		move.setFrom(new Coordinate(0, 0));
+		move.setTo(new Coordinate(0, 0));
+		move.setType(MoveType.ATTACK);
+		board.setPieceAt(null, new Coordinate(0, 0));
+		return move;
+	}
+}
