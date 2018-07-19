@@ -1,0 +1,51 @@
+package com.capgemini.chess.algorithms.implementation;
+
+import com.capgemini.chess.algorithms.data.Coordinate;
+import com.capgemini.chess.algorithms.data.Move;
+import com.capgemini.chess.algorithms.data.enums.Color;
+import com.capgemini.chess.algorithms.data.enums.MoveType;
+import com.capgemini.chess.algorithms.data.enums.Piece;
+import com.capgemini.chess.algorithms.data.enums.PieceType;
+import com.capgemini.chess.algorithms.data.generated.Board;
+import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
+
+public class EnPassantValidator {
+
+	public static boolean validateEnPassant(Coordinate from, Coordinate to, Board board) throws InvalidMoveException {
+
+		Piece currentPiece = board.getPieceAt(from);
+		PieceType currentPieceType = currentPiece.getType();
+		Piece capturedPiece = board.getPieceAt(to);
+
+		int currentx = from.getX();
+		int currenty = from.getY();
+		int newx = to.getX();
+		int newy = to.getY();
+	
+			if (board.getMoveHistory().size() > 1) {
+
+				Move lastMove = board.getMoveHistory().get(board.getMoveHistory().size() - 1);
+				if (board.getPieceAt(from).getType() == PieceType.PAWN
+						&& lastMove.getMovedPiece().getType() == PieceType.PAWN) {
+
+					Coordinate lastFrom = lastMove.getFrom();
+					Coordinate lastTo = lastMove.getTo();
+
+					if (lastFrom.getX() == lastTo.getX() || Math.abs(lastFrom.getY() - lastTo.getY()) == 2) {
+						System.out.println(board.getPieceAt(lastTo));
+						if (board.getPieceAt(lastTo).getColor() == Color.WHITE) {
+							if (to == new Coordinate(lastTo.getY() - 1, lastTo.getX())) {
+								return true;
+							}
+						}
+						else {
+							if (to == new Coordinate(lastTo.getY() + 1, lastTo.getX())) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+			return false;
+	}
+}

@@ -1,7 +1,9 @@
 package com.capgemini.chess.algorithms.implementation;
 
 import com.capgemini.chess.algorithms.data.Coordinate;
+import com.capgemini.chess.algorithms.data.Move;
 import com.capgemini.chess.algorithms.data.enums.Color;
+import com.capgemini.chess.algorithms.data.enums.MoveType;
 import com.capgemini.chess.algorithms.data.enums.Piece;
 import com.capgemini.chess.algorithms.data.enums.PieceType;
 import com.capgemini.chess.algorithms.data.generated.Board;
@@ -20,11 +22,15 @@ public class PossibleMoveManager {
 		int newx = to.getX();
 		int newy = to.getY();
 	
+		
 
 		switch (currentPieceType)
 
 		{
 		case PAWN:
+			if (EnPassantValidator.validateEnPassant(from, to, board)){
+				return true;
+			}
 			// White Player
 			if (currentPiece.getColor() == Color.WHITE) {
 				// Capture - move diagonally

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="KingInCheckTest" project="ChessAlgorithms" tests="2" started="2" failures="0" errors="0" ignored="0">
-  <testsuite name="com.capgemini.chess.algorithms.implementation.KingInCheckTest" time="0.022">
-    <testcase name="testUpdateBoardStateCheckMate" classname="com.capgemini.chess.algorithms.implementation.KingInCheckTest" time="0.016"/>
-    <testcase name="testUpdateBoardStateRegular" classname="com.capgemini.chess.algorithms.implementation.KingInCheckTest" time="0.006"/>
-  </testsuite>
-</testrun>

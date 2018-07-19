@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="ValidateTests" project="ChessAlgorithms" tests="5" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="com.capgemini.chess.algorithms.implementation.ValidateTests" incomplete="true">
+    <testcase name="testPerformMoveValidBishopMove" classname="com.capgemini.chess.algorithms.implementation.ValidateTests" incomplete="true"/>
+    <testcase name="testKingWouldBeChecked" classname="com.capgemini.chess.algorithms.implementation.ValidateTests" incomplete="true"/>
+    <testcase name="testPerformMoveCaptureSameColor" classname="com.capgemini.chess.algorithms.implementation.ValidateTests" incomplete="true"/>
+    <testcase name="testPerformMoveWithWrongCoordinates" classname="com.capgemini.chess.algorithms.implementation.ValidateTests" incomplete="true"/>
+    <testcase name="testPerformMoveInvalidKing" classname="com.capgemini.chess.algorithms.implementation.ValidateTests" incomplete="true"/>
+  </testsuite>
+</testrun>

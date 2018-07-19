@@ -246,13 +246,15 @@ public class BoardManager {
 		currentMove.setTo(to);
 		currentMove.setType(checkMoveType(from, to));
 
-		
-		
-		possibleMove.checkMovePossibility(from, to, this.board);
 		if (possibleMove.checkMovePossibility(from, to, this.board) == false) {
 			throw new InvalidMoveException();
 		}
+		
+		if(EnPassantValidator.validateEnPassant(from, to, this.board)){
+		currentMove.setType(MoveType.EN_PASSANT);	
+		}
 
+		// Check if checked
 		this.board.setPieceAt(this.board.getPieceAt(from), to);
 		this.board.setPieceAt(null, currentMove.getFrom());
 
@@ -265,8 +267,12 @@ public class BoardManager {
 
 		this.board.setPieceAt(this.board.getPieceAt(to), from);
 		this.board.setPieceAt(null, currentMove.getTo());
+		
+		
 
+		
 		return currentMove;
+
 	}
 
 	private boolean isKingInCheck(Color kingColor) throws InvalidMoveException {
@@ -296,8 +302,8 @@ public class BoardManager {
 				if (temporaryPiece != null && temporaryPiece.getColor() != kingColor) {
 					PossibleMoveManager possibleMove = new PossibleMoveManager();
 					Coordinate attackerCoordinate = new Coordinate(i, j);
-					
-					if(kingCoordinate==null){
+
+					if (kingCoordinate == null) {
 						return false;
 					}
 
@@ -315,28 +321,29 @@ public class BoardManager {
 
 	private boolean isAnyMoveValid(Color nextMoveColor) throws InvalidMoveException {
 		// TODO please add implementation here
-		System.out.println("zaczynam co jest w 2, 1" + this.board.getPieceAt(new Coordinate(2,1)));
-		
+
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 
 				Coordinate firstCoordinate = new Coordinate(i, j);
-			
-				if (this.board.getPieceAt(firstCoordinate) != null && this.board.getPieceAt(firstCoordinate).getColor()==nextMoveColor) {
+
+				if (this.board.getPieceAt(firstCoordinate) != null
+						&& this.board.getPieceAt(firstCoordinate).getColor() == nextMoveColor) {
 					for (int n = 0; n < 8; n++) {
 						for (int m = 0; m < 8; m++) {
 							Coordinate secondCoordinate = new Coordinate(n, m);
 							if (checkGivenCoordinates(firstCoordinate, secondCoordinate)) {
-								
-								if( PossibleMoveManager.checkMovePossibility(firstCoordinate, secondCoordinate,	this.board)){
-									
+
+								if (PossibleMoveManager.checkMovePossibility(firstCoordinate, secondCoordinate,
+										this.board)) {
+
 									Move currentMove = new Move();
-									
+
 									currentMove.setFrom(firstCoordinate);
 									currentMove.setMovedPiece(this.board.getPieceAt(firstCoordinate));
 									currentMove.setTo(secondCoordinate);
 									currentMove.setType(checkMoveType(firstCoordinate, secondCoordinate));
-									
+
 									this.board.setPieceAt(this.board.getPieceAt(firstCoordinate), secondCoordinate);
 									this.board.setPieceAt(null, currentMove.getFrom());
 
@@ -349,10 +356,10 @@ public class BoardManager {
 
 									this.board.setPieceAt(this.board.getPieceAt(secondCoordinate), firstCoordinate);
 									this.board.setPieceAt(null, currentMove.getTo());
-									
-									System.out.println("co jest drugim koordynacie" + this.board.getPieceAt(secondCoordinate) + secondCoordinate.getX()  + secondCoordinate.getY());
+
 									return true;
-								};
+								}
+								;
 							}
 						}
 					}

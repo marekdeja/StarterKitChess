@@ -1,0 +1,42 @@
+package com.capgemini.chess.algorithms.implementation;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
+import com.capgemini.chess.algorithms.data.Coordinate;
+import com.capgemini.chess.algorithms.data.Move;
+import com.capgemini.chess.algorithms.data.enums.BoardState;
+import com.capgemini.chess.algorithms.data.enums.MoveType;
+import com.capgemini.chess.algorithms.data.enums.Piece;
+import com.capgemini.chess.algorithms.data.generated.Board;
+import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
+import com.capgemini.chess.algorithms.implementation.exceptions.KingInCheckException;
+
+/**
+ * Test class for testing {@link BoardManager}
+ * 
+ * @author Michal Bejm
+ *
+ */
+public class ValidateTests {
+
+	
+	
+	@Test
+	public void testPerformMoveWithWrongCoordinates() throws InvalidMoveException  {
+		// given
+		Board board = new Board();
+		board.setPieceAt(Piece.WHITE_QUEEN, new Coordinate(5, 0));
+		
+		// when
+		BoardManager boardManager = new BoardManager(board);
+		Move move = boardManager.performMove(new Coordinate(5, 0), new Coordinate(12, 2));
+		
+		// then
+		assertEquals(Piece.WHITE_QUEEN, move.getMovedPiece());
+	}
+}
