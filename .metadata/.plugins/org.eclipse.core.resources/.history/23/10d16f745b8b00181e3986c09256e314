@@ -255,7 +255,7 @@ public class BoardManager {
 		}
 		
 
-		// Check if checked -> dodac dla wszystkich nie tylko regular !!!!!!!!!!! - dac if jak castling i przesunac wieze
+		// Check if checked -> dodac dla wszystkich nie tylko regular !!!!!!!!!!!
 		this.board.setPieceAt(this.board.getPieceAt(from), to);
 		this.board.setPieceAt(null, currentMove.getFrom());
 

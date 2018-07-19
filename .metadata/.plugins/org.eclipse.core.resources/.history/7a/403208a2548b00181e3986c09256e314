@@ -247,13 +247,6 @@ public class PossibleMoveManager {
 			if ((Math.abs(currentx-newx)==1 || Math.abs(currentx-newx)==0) && (Math.abs(currenty-newy)==1 || Math.abs(currenty-newy)==0)){
 				return true;
 			}
-			Coordinate currentCoordinate = new Coordinate (currentx, currenty);
-			Coordinate nextCoordinate = new Coordinate (currentx, currenty);
-			
-			//WHITE CASTLING
-			if (currentCoordinate == new Coordinate(4,0)&&  nextCoordinate== new Coordinate (6,0) && CastlingValidator.validateCastling(board, Color.WHITE)){
-				return true;
-			}
 			else{
 				return false;
 			}

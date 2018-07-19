@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="com.capgemini.chess.algorithms.data.Coordinate"/>
-<fullyQualifiedTypeName name="com.capgemini.chess.algorithms.data.generated.Board"/>
 <fullyQualifiedTypeName name="com.capgemini.chess.algorithms.data.enums.PieceType"/>
 <fullyQualifiedTypeName name="com.capgemini.chess.algorithms.data.enums.Piece"/>
 <fullyQualifiedTypeName name="com.capgemini.chess.algorithms.data.enums.Color"/>
 <fullyQualifiedTypeName name="com.capgemini.chess.algorithms.implementation.exceptions.InvalidCoordinatesException"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="com.capgemini.chess.algorithms.data.generated.Board"/>
 </qualifiedTypeNameHistroy>

@@ -1,0 +1,55 @@
+package com.capgemini.chess.algorithms.implementation;
+
+import com.capgemini.chess.algorithms.data.Coordinate;
+import com.capgemini.chess.algorithms.data.enums.Color;
+import com.capgemini.chess.algorithms.data.enums.Piece;
+import com.capgemini.chess.algorithms.data.enums.PieceType;
+import com.capgemini.chess.algorithms.data.generated.Board;
+import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
+
+public class CheckValidator {
+	
+	boolean isKingInCheck(Color kingColor, Board board) throws InvalidMoveException {
+		// TODO please add implementation here
+		// Koordynaty krola
+		Piece checkedKing;
+		Coordinate kingCoordinate = null;
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Piece myKing = board.getPieceAt(new Coordinate(i, j));
+				if (myKing != null) {
+					if (myKing.getType() == PieceType.KING && myKing.getColor() == kingColor) {
+						checkedKing = myKing;
+						kingCoordinate = new Coordinate(i, j);
+					}
+				}
+			}
+		}
+		// Koordynaty kazdego mozliwego ataku
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Piece temporaryPiece = board.getPieceAt(new Coordinate(i, j));
+
+				if (temporaryPiece != null && temporaryPiece.getColor() == kingColor) {
+				}
+
+				if (temporaryPiece != null && temporaryPiece.getColor() != kingColor) {
+					PossibleMoveManager possibleMove = new PossibleMoveManager();
+					Coordinate attackerCoordinate = new Coordinate(i, j);
+
+					if (kingCoordinate == null) {
+						return false;
+					}
+
+					if (possibleMove.checkMovePossibility(attackerCoordinate, kingCoordinate, board)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+
+		}
+		return false;
+	}
+}

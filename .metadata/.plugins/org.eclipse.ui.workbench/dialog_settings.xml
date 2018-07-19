@@ -40,8 +40,6 @@
 			<item value="org.eclipse.wst.web.ui"/>
 			<item value="org.eclipse.jst.ws.ui.new"/>
 			<item value="org.eclipse.wb"/>
-			<item value="org.eclipse.wb/org.eclipse.wb.rcp/org.eclipse.wb.rcp.forms"/>
-			<item value="org.eclipse.wb/org.eclipse.wb.rcp/org.eclipse.wb.rcp.swt"/>
 			<item value="org.eclipse.xtend.ide.wizards"/>
 		</list>
 	</section>

@@ -1,0 +1,34 @@
+package com.capgemini.chess.algorithms.implementation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.capgemini.chess.algorithms.data.Coordinate;
+import com.capgemini.chess.algorithms.data.Move;
+import com.capgemini.chess.algorithms.data.enums.Color;
+import com.capgemini.chess.algorithms.data.enums.MoveType;
+import com.capgemini.chess.algorithms.data.enums.Piece;
+import com.capgemini.chess.algorithms.data.enums.PieceType;
+import com.capgemini.chess.algorithms.data.generated.Board;
+import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
+
+public class CastlingValidator {
+
+	public static boolean validateCastling(Board board, Color nextMoveColor) throws InvalidMoveException {
+
+		List history = new ArrayList();
+		history = board.getMoveHistory();
+		BoardManager boardManager = new BoardManager(board);
+		Coordinate whiteKingCoordinate = new Coordinate (4,0);
+		Coordinate whiteRightRook = new Coordinate (7, 0);
+		
+		
+		if(history.get(history.size()-1))){
+		for (int i = 0; i < history.size(); i++) {
+			Move move = (Move) history.get(i);
+			if (move.getFrom()
+		}
+		}
+		return false;
+	}
+}

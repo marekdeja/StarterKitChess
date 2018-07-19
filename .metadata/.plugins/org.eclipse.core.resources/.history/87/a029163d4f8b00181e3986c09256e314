@@ -249,13 +249,12 @@ public class BoardManager {
 		if (possibleMove.checkMovePossibility(from, to, this.board) == false) {
 			throw new InvalidMoveException();
 		}
-
-		if (EnPassantValidator.validateEnPassant(from, to, this.board)) {
-			currentMove.setType(MoveType.EN_PASSANT);
-		}
 		
+		if(EnPassantValidator.validateEnPassant(from, to, this.board)){
+		currentMove.setType(MoveType.EN_PASSANT);	
+		}
 
-		// Check if checked -> dodac dla wszystkich nie tylko regular !!!!!!!!!!! - dac if jak castling i przesunac wieze
+		// Check if checked
 		this.board.setPieceAt(this.board.getPieceAt(from), to);
 		this.board.setPieceAt(null, currentMove.getFrom());
 
@@ -268,21 +267,60 @@ public class BoardManager {
 
 		this.board.setPieceAt(this.board.getPieceAt(to), from);
 		this.board.setPieceAt(null, currentMove.getTo());
+		
+		
 
+		
 		return currentMove;
 
 	}
-
-
+	
+	public boolean getIsKingInCheck(Color kingColor) throws InvalidMoveException{
+		return isKingInCheck(kingColor);
+	}
 
 	private boolean isKingInCheck(Color kingColor) throws InvalidMoveException {
 		// TODO please add implementation here
 		// Koordynaty krola
-		if(CheckValidator.isKingInCheck(kingColor, this.board)){
-			return true;
-		}else{
-			return false;
+		Piece checkedKing;
+		Coordinate kingCoordinate = null;
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Piece myKing = this.board.getPieceAt(new Coordinate(i, j));
+				if (myKing != null) {
+					if (myKing.getType() == PieceType.KING && myKing.getColor() == kingColor) {
+						checkedKing = myKing;
+						kingCoordinate = new Coordinate(i, j);
+					}
+				}
+			}
 		}
+		// Koordynaty kazdego mozliwego ataku
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Piece temporaryPiece = this.board.getPieceAt(new Coordinate(i, j));
+
+				if (temporaryPiece != null && temporaryPiece.getColor() == kingColor) {
+				}
+
+				if (temporaryPiece != null && temporaryPiece.getColor() != kingColor) {
+					PossibleMoveManager possibleMove = new PossibleMoveManager();
+					Coordinate attackerCoordinate = new Coordinate(i, j);
+
+					if (kingCoordinate == null) {
+						return false;
+					}
+
+					if (possibleMove.checkMovePossibility(attackerCoordinate, kingCoordinate, this.board)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+
+		}
+		return false;
 	}
 
 	private boolean isAnyMoveValid(Color nextMoveColor) throws InvalidMoveException {

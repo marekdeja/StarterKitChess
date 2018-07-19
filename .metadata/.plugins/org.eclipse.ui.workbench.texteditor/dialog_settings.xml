@@ -6,20 +6,20 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Sys" key="selection"/>
+		<item value="CASTLING" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="sys"/>
-			<item value="syste"/>
-			<item value="regula"/>
-			<item value="dummy"/>
-			<item value="validate"/>
-			<item value="performMove"/>
-			<item value="perfomMove"/>
-			<item value="kingincheckexc"/>
+			<item value="castling"/>
+			<item value="calculate"/>
+			<item value="getH"/>
+			<item value="history"/>
+			<item value="getMove"/>
+			<item value="last"/>
+			<item value="addMove"/>
+			<item value="enpassant"/>
 		</list>
 		<list key="replacehistory">
 			<item value=" "/>
@@ -31,7 +31,7 @@
 		<item value="305" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="442" key="DIALOG_HEIGHT"/>
-		<item value="1242" key="DIALOG_X_ORIGIN"/>
-		<item value="389" key="DIALOG_Y_ORIGIN"/>
+		<item value="1228" key="DIALOG_X_ORIGIN"/>
+		<item value="396" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

@@ -248,10 +248,8 @@ public class PossibleMoveManager {
 				return true;
 			}
 			Coordinate currentCoordinate = new Coordinate (currentx, currenty);
-			Coordinate nextCoordinate = new Coordinate (currentx, currenty);
-			
 			//WHITE CASTLING
-			if (currentCoordinate == new Coordinate(4,0)&&  nextCoordinate== new Coordinate (6,0) && CastlingValidator.validateCastling(board, Color.WHITE)){
+			if (currentCoordinate == new Coordinate(6,0) && CastlingValidator.validateCastling(board, Color.WHITE)){
 				return true;
 			}
 			else{
